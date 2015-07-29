@@ -204,21 +204,44 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 
 - (void)updateSelectionInfo
 {
-    NSMutableOrderedSet *selectedAssets = self.imagePickerController.selectedAssets;
+    if (!self.imagePickerController.showsNumberOfSelectedAssets) {
+        return;
+    }
     
-    if (selectedAssets.count > 0) {
-        NSBundle *bundle = self.imagePickerController.assetBundle;
-        NSString *format;
-        if (selectedAssets.count > 1) {
-            format = NSLocalizedStringFromTableInBundle(@"assets.toolbar.items-selected", @"QBImagePicker", bundle, nil);
-        } else {
-            format = NSLocalizedStringFromTableInBundle(@"assets.toolbar.item-selected", @"QBImagePicker", bundle, nil);
+    switch (self.imagePickerController.numberOfSelectionStyle) {
+        case QBImageNumberOfSelectionStyleDefault:
+        {
+            NSMutableOrderedSet *selectedAssets = self.imagePickerController.selectedAssets;
+            NSBundle *bundle = self.imagePickerController.assetBundle;
+            if (selectedAssets.count > 0) {
+                NSString *format;
+                if (selectedAssets.count > 1) {
+                    format = NSLocalizedStringFromTableInBundle(@"assets.toolbar.items-selected", @"QBImagePicker", bundle, nil);
+                } else {
+                    format = NSLocalizedStringFromTableInBundle(@"assets.toolbar.item-selected", @"QBImagePicker", bundle, nil);
+                }
+                
+                NSString *title = [NSString stringWithFormat:format, selectedAssets.count];
+                [(UIBarButtonItem *)self.toolbarItems[1] setTitle:title];
+            } else {
+                [(UIBarButtonItem *)self.toolbarItems[1] setTitle:@""];
+            }
         }
-        
-        NSString *title = [NSString stringWithFormat:format, selectedAssets.count];
-        [(UIBarButtonItem *)self.toolbarItems[1] setTitle:title];
-    } else {
-        [(UIBarButtonItem *)self.toolbarItems[1] setTitle:@""];
+            break;
+            
+        case QBImageNumberOfSelectionStyleAppendToTitle:
+        {
+            NSUInteger selected = self.imagePickerController.selectedAssets.count;
+            NSString *title = self.assetCollection.localizedTitle;
+            if (selected > 0) {
+                NSUInteger maximum = self.imagePickerController.maximumNumberOfSelection;
+                NSString *selectedTitle = NSLocalizedStringFromTableInBundle(@"albums.title.selected", @"QBImagePicker", self.imagePickerController.assetBundle, nil);
+                self.navigationItem.title = [NSString stringWithFormat:@"%@: %lu/%lu",selectedTitle, (unsigned long)selected, (unsigned long)maximum];
+            } else {
+                self.navigationItem.title = title;
+            }
+        }
+            break;
     }
 }
 
@@ -593,7 +616,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
         if (imagePickerController.showsNumberOfSelectedAssets) {
             [self updateSelectionInfo];
             
-            if (selectedAssets.count == 1) {
+            if (self.imagePickerController.numberOfSelectionStyle == QBImageNumberOfSelectionStyleDefault && selectedAssets.count == 1) {
                 // Show toolbar
                 [self.navigationController setToolbarHidden:NO animated:YES];
             }
@@ -635,7 +658,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     if (imagePickerController.showsNumberOfSelectedAssets) {
         [self updateSelectionInfo];
         
-        if (selectedAssets.count == 0) {
+        if (self.imagePickerController.numberOfSelectionStyle == QBImageNumberOfSelectionStyleDefault && selectedAssets.count == 0) {
             // Hide toolbar
             [self.navigationController setToolbarHidden:YES animated:YES];
         }

@@ -30,6 +30,11 @@ typedef NS_ENUM(NSUInteger, QBImagePickerMediaType) {
     QBImagePickerMediaTypeVideo
 };
 
+typedef NS_ENUM(NSUInteger, QBImageNumberOfSelectionStyle) {
+    QBImageNumberOfSelectionStyleDefault = 0,
+    QBImageNumberOfSelectionStyleAppendToTitle
+};
+
 @interface QBImagePickerController : UIViewController
 
 @property (nonatomic, weak) id<QBImagePickerControllerDelegate> delegate;
@@ -43,6 +48,7 @@ typedef NS_ENUM(NSUInteger, QBImagePickerMediaType) {
 
 @property (nonatomic, copy) NSString *prompt;
 @property (nonatomic, assign) BOOL showsNumberOfSelectedAssets;
+@property (nonatomic, assign) QBImageNumberOfSelectionStyle numberOfSelectionStyle;
 
 @property (nonatomic, assign) NSUInteger numberOfColumnsInPortrait;
 @property (nonatomic, assign) NSUInteger numberOfColumnsInLandscape;

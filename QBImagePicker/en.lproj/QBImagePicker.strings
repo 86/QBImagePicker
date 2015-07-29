@@ -8,6 +8,8 @@
 
 "albums.title" = "Photos";
 
+"albums.title.selected" = "Selected";
+
 "assets.footer.photo" = "%ld Photo";
 "assets.footer.photos" = "%ld Photos";
 "assets.footer.video" = "%ld Video";

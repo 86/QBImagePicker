@@ -235,8 +235,8 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
             NSString *title = self.assetCollection.localizedTitle;
             if (selected > 0) {
                 NSUInteger maximum = self.imagePickerController.maximumNumberOfSelection;
-                NSString *selectedTitle = NSLocalizedStringFromTableInBundle(@"albums.title.selected", @"QBImagePicker", self.imagePickerController.assetBundle, nil);
-                self.navigationItem.title = [NSString stringWithFormat:@"%@: %lu/%lu",selectedTitle, (unsigned long)selected, (unsigned long)maximum];
+                NSString *selectedTitleFormat = NSLocalizedStringFromTableInBundle(@"albums.title.selected", @"QBImagePicker", self.imagePickerController.assetBundle, nil);
+                self.navigationItem.title = [NSString stringWithFormat:selectedTitleFormat, (unsigned long)selected, (unsigned long)maximum];
             } else {
                 self.navigationItem.title = title;
             }
@@ -470,7 +470,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     
     // Image
     PHAsset *asset = self.fetchResult[indexPath.item];
-    CGSize itemSize = [(UICollectionViewFlowLayout *)collectionView.collectionViewLayout itemSize];
+    CGSize itemSize = cell.bounds.size;
     CGSize targetSize = CGSizeScale(itemSize, self.traitCollection.displayScale);
     
     [self.imageManager requestImageForAsset:asset

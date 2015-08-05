@@ -8,7 +8,7 @@
 
 "albums.title" = "アルバム";
 
-"albums.title.selected" = "選択中";
+"albums.title.selected" = "選択中: %ld/%ld";
 
 "assets.footer.photo" = "写真: %ld枚";
 "assets.footer.photos" = "写真: %ld枚";

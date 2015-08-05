@@ -8,7 +8,7 @@
 
 "albums.title" = "Photos";
 
-"albums.title.selected" = "Selected";
+"albums.title.selected" = "Selected: %ld of %ld";
 
 "assets.footer.photo" = "%ld Photo";
 "assets.footer.photos" = "%ld Photos";

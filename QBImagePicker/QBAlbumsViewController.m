@@ -216,8 +216,8 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 {
     NSMutableArray *assetCollections = [NSMutableArray array];
     NSArray *filters = self.imagePickerController.assetCollectionSubtypes;
-    NSMutableArray *orderd = [NSMutableArray new];
-    NSMutableArray *others = [NSMutableArray new];
+    NSMutableArray *orderd = [NSMutableArray array];
+    NSMutableArray *others = [NSMutableArray array];
     
     for (PHFetchResult *fetchResult in self.fetchResults) {
         [fetchResult enumerateObjectsUsingBlock:^(PHAssetCollection *assetCollection, NSUInteger index, BOOL *stop) {

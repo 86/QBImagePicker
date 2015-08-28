@@ -226,7 +226,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
                 return;
             }
             
-            if ([[self orderdSubTypes] containsObject:subType]) {
+            if ([[self orderedSubTypes] containsObject:subType]) {
                 [orderd addObject:assetCollection];
                 return;
             }
@@ -236,8 +236,8 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     }
     
     [orderd sortUsingComparator:^NSComparisonResult(PHAssetCollection *asset1, PHAssetCollection *asset2) {
-        NSNumber *number1 = [NSNumber numberWithUnsignedInteger:[[self orderdSubTypes] indexOfObject:@(asset1.assetCollectionSubtype)]];
-        NSNumber *number2 = [NSNumber numberWithUnsignedInteger:[[self orderdSubTypes] indexOfObject:@(asset2.assetCollectionSubtype)]];
+        NSNumber *number1 = [NSNumber numberWithUnsignedInteger:[[self orderedSubTypes] indexOfObject:@(asset1.assetCollectionSubtype)]];
+        NSNumber *number2 = [NSNumber numberWithUnsignedInteger:[[self orderedSubTypes] indexOfObject:@(asset2.assetCollectionSubtype)]];
         return [number1 compare:number2];
     }];
     
@@ -247,7 +247,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     return [assetCollections copy];
 }
 
-- (NSArray *)orderdSubTypes
+- (NSArray *)orderedSubTypes
 {
     static NSArray *_subTypes = nil;
     static dispatch_once_t onceToken;

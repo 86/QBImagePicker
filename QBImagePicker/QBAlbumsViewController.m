@@ -216,7 +216,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 {
     NSMutableArray *assetCollections = [NSMutableArray array];
     NSArray *filters = self.imagePickerController.assetCollectionSubtypes;
-    NSMutableArray *orderd = [NSMutableArray array];
+    NSMutableArray *ordered = [NSMutableArray array];
     NSMutableArray *others = [NSMutableArray array];
     
     for (PHFetchResult *fetchResult in self.fetchResults) {
@@ -227,7 +227,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
             }
             
             if ([[self orderedSubTypes] containsObject:subType]) {
-                [orderd addObject:assetCollection];
+                [ordered addObject:assetCollection];
                 return;
             }
             
@@ -235,13 +235,13 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
         }];
     }
     
-    [orderd sortUsingComparator:^NSComparisonResult(PHAssetCollection *asset1, PHAssetCollection *asset2) {
+    [ordered sortUsingComparator:^NSComparisonResult(PHAssetCollection *asset1, PHAssetCollection *asset2) {
         NSNumber *number1 = [NSNumber numberWithUnsignedInteger:[[self orderedSubTypes] indexOfObject:@(asset1.assetCollectionSubtype)]];
         NSNumber *number2 = [NSNumber numberWithUnsignedInteger:[[self orderedSubTypes] indexOfObject:@(asset2.assetCollectionSubtype)]];
         return [number1 compare:number2];
     }];
     
-    [assetCollections addObjectsFromArray:orderd];
+    [assetCollections addObjectsFromArray:ordered];
     [assetCollections addObjectsFromArray:others];
     
     return [assetCollections copy];

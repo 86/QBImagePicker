@@ -29,6 +29,7 @@
     
     if (self) {
         // Set default values
+        self.assetCollectionFilterType = QBImagePickerAssetCollectionFilterTypeWhite;
         self.assetCollectionSubtypes = @[
                                          @(PHAssetCollectionSubtypeSmartAlbumUserLibrary),
                                          @(PHAssetCollectionSubtypeAlbumMyPhotoStream),

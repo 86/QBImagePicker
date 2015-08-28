@@ -164,6 +164,20 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 
 - (void)updateAssetCollections
 {
+    NSArray *assetCollections;
+    switch (self.imagePickerController.assetCollectionFilterType) {
+        case QBImagePickerAssetCollectionFilterTypeWhite:
+            assetCollections = [self assetCollectionsFilteredAsWhiteList];
+            break;
+        case QBImagePickerAssetCollectionFilterTypeTypeBlack:
+            assetCollections = [self assetCollectionsFilteredAsBlackList];
+            break;
+    }
+    self.assetCollections = assetCollections;
+}
+
+- (NSArray *)assetCollectionsFilteredAsWhiteList
+{
     NSMutableArray *assetCollections = [NSMutableArray array];
     
     // Filter albums
@@ -195,7 +209,64 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
         [assetCollections addObject:assetCollection];
     }];
     
-    self.assetCollections = assetCollections;
+    return [assetCollections copy];
+}
+
+- (NSArray *)assetCollectionsFilteredAsBlackList
+{
+    NSMutableArray *assetCollections = [NSMutableArray array];
+    NSArray *filters = self.imagePickerController.assetCollectionSubtypes;
+    NSMutableArray *orderd = [NSMutableArray new];
+    NSMutableArray *others = [NSMutableArray new];
+    
+    for (PHFetchResult *fetchResult in self.fetchResults) {
+        [fetchResult enumerateObjectsUsingBlock:^(PHAssetCollection *assetCollection, NSUInteger index, BOOL *stop) {
+            NSNumber *subType = @(assetCollection.assetCollectionSubtype);
+            if ([filters containsObject:subType]) {
+                return;
+            }
+            
+            if ([[self orderdSubTypes] containsObject:subType]) {
+                [orderd addObject:assetCollection];
+                return;
+            }
+            
+            [others addObject:assetCollection];
+        }];
+    }
+    
+    [orderd sortUsingComparator:^NSComparisonResult(PHAssetCollection *asset1, PHAssetCollection *asset2) {
+        NSNumber *number1 = [NSNumber numberWithUnsignedInteger:[[self orderdSubTypes] indexOfObject:@(asset1.assetCollectionSubtype)]];
+        NSNumber *number2 = [NSNumber numberWithUnsignedInteger:[[self orderdSubTypes] indexOfObject:@(asset2.assetCollectionSubtype)]];
+        return [number1 compare:number2];
+    }];
+    
+    [assetCollections addObjectsFromArray:orderd];
+    [assetCollections addObjectsFromArray:others];
+    
+    return [assetCollections copy];
+}
+
+- (NSArray *)orderdSubTypes
+{
+    static NSArray *_subTypes = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _subTypes = @[
+                      @(PHAssetCollectionSubtypeSmartAlbumUserLibrary),
+                      @(PHAssetCollectionSubtypeAlbumMyPhotoStream),
+                      @(PHAssetCollectionSubtypeSmartAlbumFavorites),
+                      @(PHAssetCollectionSubtypeSmartAlbumRecentlyAdded),
+                      @(PHAssetCollectionSubtypeSmartAlbumBursts),
+                      @(PHAssetCollectionSubtypeSmartAlbumPanoramas),
+                      @(PHAssetCollectionSubtypeAlbumRegular),
+                      @(PHAssetCollectionSubtypeAlbumSyncedAlbum),
+                      @(PHAssetCollectionSubtypeAlbumSyncedEvent),
+                      @(PHAssetCollectionSubtypeAlbumImported),
+                      ];
+    });
+    
+    return _subTypes;
 }
 
 - (UIImage *)placeholderImageWithSize:(CGSize)size

@@ -169,7 +169,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
         case QBImagePickerAssetCollectionFilterTypeWhite:
             assetCollections = [self assetCollectionsFilteredAsWhiteList];
             break;
-        case QBImagePickerAssetCollectionFilterTypeTypeBlack:
+        case QBImagePickerAssetCollectionFilterTypeBlack:
             assetCollections = [self assetCollectionsFilteredAsBlackList];
             break;
     }

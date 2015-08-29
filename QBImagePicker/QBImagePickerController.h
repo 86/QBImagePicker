@@ -32,7 +32,7 @@ typedef NS_ENUM(NSUInteger, QBImagePickerMediaType) {
 
 typedef NS_ENUM(NSUInteger, QBImagePickerAssetCollectionFilterType) {
     QBImagePickerAssetCollectionFilterTypeWhite = 0,
-    QBImagePickerAssetCollectionFilterTypeTypeBlack,
+    QBImagePickerAssetCollectionFilterTypeBlack,
 };
 
 typedef NS_ENUM(NSUInteger, QBImageNumberOfSelectionStyle) {

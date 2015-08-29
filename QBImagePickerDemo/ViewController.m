@@ -46,6 +46,11 @@
                 imagePickerController.maximumNumberOfSelection = 6;
                 break;
                 
+            case 4:
+                imagePickerController.minimumNumberOfSelection = 1;
+                imagePickerController.maximumNumberOfSelection = 4;
+                imagePickerController.assetCollectionFilterType = QBImagePickerAssetCollectionFilterTypeBlack;
+                imagePickerController.assetCollectionSubtypes = @[];
             default:
                 break;
         }

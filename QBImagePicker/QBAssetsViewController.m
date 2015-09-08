@@ -472,10 +472,13 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     CGSize itemSize = cell.bounds.size;
     CGSize targetSize = CGSizeScale(itemSize, self.traitCollection.displayScale);
     
+    PHImageRequestOptions *requestOptions = [PHImageRequestOptions new];
+    requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
+    
     [self.imageManager requestImageForAsset:asset
                                  targetSize:targetSize
                                 contentMode:PHImageContentModeAspectFill
-                                    options:nil
+                                    options:requestOptions
                               resultHandler:^(UIImage *result, NSDictionary *info) {
                                   if (cell.tag == indexPath.item) {
                                       cell.imageView.image = result;

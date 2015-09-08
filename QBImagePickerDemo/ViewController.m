@@ -50,7 +50,12 @@
                 imagePickerController.minimumNumberOfSelection = 1;
                 imagePickerController.maximumNumberOfSelection = 4;
                 imagePickerController.assetCollectionFilterType = QBImagePickerAssetCollectionFilterTypeBlack;
+                imagePickerController.numberOfSelectionStyle = QBImageNumberOfSelectionStyleAppendToTitle;
                 imagePickerController.assetCollectionSubtypes = @[];
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    imagePickerController.numberOfColumnsInLandscape = 7;
+                    imagePickerController.numberOfColumnsInPortrait = 5;
+                }
             default:
                 break;
         }

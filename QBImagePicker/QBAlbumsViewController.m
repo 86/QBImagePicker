@@ -214,6 +214,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 
 - (NSArray *)assetCollectionsFilteredAsBlackList
 {
+    NSLog(@"assetCollectionsFilteredAsBlackList:Start");
     NSMutableArray *assetCollections = [NSMutableArray array];
     NSArray *filters = self.imagePickerController.assetCollectionSubtypes;
     NSMutableArray *ordered = [NSMutableArray array];
@@ -222,8 +223,15 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     for (PHFetchResult *fetchResult in self.fetchResults) {
         [fetchResult enumerateObjectsUsingBlock:^(PHAssetCollection *assetCollection, NSUInteger index, BOOL *stop) {
             NSNumber *subType = @(assetCollection.assetCollectionSubtype);
-            if ([filters containsObject:subType]) {
-                return;
+            if ([filters containsObject:subType]) return;
+           
+            NSRange range = NSMakeRange(200, 100);
+            BOOL contained = NSLocationInRange([subType integerValue], range);
+            if (contained) {
+//                NSLog(@"subtype: %@ , contains: %u",subType, contained);
+                PHFetchResult *result = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
+//                NSLog(@"result.count: %lu", (unsigned long)result.count);
+                if (!result.count) return;
             }
             
             if ([[self orderedSubTypes] containsObject:subType]) {
@@ -244,6 +252,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     [assetCollections addObjectsFromArray:ordered];
     [assetCollections addObjectsFromArray:others];
     
+    NSLog(@"assetCollectionsFilteredAsBlackList:end");
     return [assetCollections copy];
 }
 
